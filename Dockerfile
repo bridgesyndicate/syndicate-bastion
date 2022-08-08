@@ -17,8 +17,11 @@ RUN set -eux; \
         apt-get install -y --no-install-recommends \
 		postgresql-client-common \
 		postgresql-12 \
-		postgresql-client-12
+		postgresql-client-12 \
+		unzip
 ADD idle.sh /root
+RUN cd /root && wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
+    unzip awscli-exe-linux-x86_64.zip && \
+    ./aws/install
+
 CMD cd; ./idle.sh
-
-
