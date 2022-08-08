@@ -8,6 +8,7 @@ RUN set -eux; \
                 libpq-dev \
 		postgresql-client-common \
 		postgresql-client-11
-CMD bash
+ADD idle.sh /root
+CMD cd; ./idle.sh
 
 
