@@ -1,0 +1,147 @@
+Run a bastion
+
+```
+aws ecs run-task --enable-execute-command --task-definition SyndicateBastionTaskDefinition \
+  --cluster SyndicateECSCluster  --network-configuration \
+'awsvpcConfiguration={subnets=[subnet-02f0a2e9ba4b5d279],securityGroups=[sg-0cde2458dac7fcd35],assignPublicIp=DISABLED}'
+```
+
+Enter a container
+```
+aws ecs execute-command --cluster SyndicateECSCluster --command "/bin/bash" --interactive --task 13568e5ffcd74f72b494b9d3640621c5
+```
+
+Check out the database
+```
+psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+```
+
+### other shit
+
+    4  ls
+    5  env | grep AWS
+    6  curl localhost:/v2/credentials/1c626012-226f-4aa3-bf14-159fba2342dd
+    7  apt-get install curl
+    8  curl localhost:/v2/credentials/1c626012-226f-4aa3-bf14-159fba2342dd
+    9  env
+   10  curl $ECS_CONTAINER_METADATA_URI_V4
+   11  curl $ECS_CONTAINER_METADATA_URI_V4 | jq
+   12  curl $ECS_CONTAINER_METADATA_URI_V4 | jq '.'
+   13  apt-get install jq
+   14  curl $ECS_CONTAINER_METADATA_URI_V4 | jq '.'
+   15  env
+   16  curl 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+   17  curl 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+   18  curl 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI | jq '.'
+   19  curl -o foo.zip https://kenpublic.s3.amazonaws.com/2022-08-18/jlHm7wrE1yyVJdR9/syndicate-web-service-sta-DynamoDBProcessGameStrea-xB9xEiJuQhtG-5d5e2d7b-7a4a-4510-9167-2b5e99c4a94c.zip
+   20  unzip -t foo.zip 
+   21  ls
+   22  cd
+   23  ls
+   24  mv /foo.zip .
+   25  ls
+   26  mkdir code
+   27  cd code
+   28  unzip ../foo.zip 
+   29  ls
+   30  ./console.rb 
+   31  ls
+   32  more console.rb 
+   33  which ruby
+   34  ruby -v
+   35  ./console.rb 
+   36  gem list
+   37  more Gemfile
+   38  ls
+   39  ls vendor/
+   40  ls vendor/bundle/
+   41  ls vendor/bundle/ruby/
+   42  ls vendor/bundle/ruby/2.7.0/
+   43  ls
+   44  bundle exec ./console.rb 
+   45  gem list
+   46  gem list | grep rake
+   47  bundle exec ./console.rb 
+   48  bundle
+   49  ls
+   50  more buildspec.yml 
+   51  bundle config set path vendor/bundle
+   52  bundle exec ./console.rb 
+   53  bundle 
+   54  ls
+   55  bundle exec ./console.rb 
+   56  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   57  fg
+   58  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   59  fg
+   60  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   61  fg
+   62  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   63  fg
+   64  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   65  fg
+   66  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   67  bundle exec ./console.rb 
+   68  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   69  fg
+   70  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   71  fg
+   72  ls -ltra ~/
+   73  ls -ltra
+   74  cd
+   75  ls -ltra
+   76  find .local/share/pry/pry_history 
+   77  more .local/share/pry/pry_history
+   78  fg
+   79  fg
+   80  cat .local/share/pry/pry_history
+   81  ls
+   82  cd code/
+   83  emacs
+   84  apt-get install -y emacs-nox
+   85  emacs console.rb 
+   86  fg
+   87  bundle exec ./console.rb 
+   88  fg
+   89  bundle exec ./console.rb 
+   90  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   91  fg
+   92  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+   93  bundle exec ./console.rb 
+   94  fg
+   95  bundle exec ./console.rb 
+   96  fg
+   97  stty -ixon
+   98  fg
+   99  bundle exec ./console.rb 
+  100  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+  101  bundle exec ./console.rb 
+  102  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+  103  bundle exec ./console.rb 
+  104  psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
+  105  ls
+  106  git
+  107  git diff
+  108  ls
+  109  history
+
+
+
+require 'aws-sdk-dynamodbstreams'
+require 'elo_rating'
+require 'json'
+require 'lib/helpers'
+require 'lib/aws_credentials'
+require 'lib/game_stream'
+require 'lib/sqs_client'
+require 'lib/rabbit_client_factory'
+require 'lib/dynamo_client'
+f = {"Records"=>[{"eventID"=>"c0317cb620b4b891e98d39fbebf617ee", "eventName"=>"MODIFY", "eventVersion"=>"1.1", "eventSource"=>"aws:dynamodb", "awsRegion"=>"us-west-2", "dynamodb"=>{"ApproximateCreationDateTime"=>1660837201.0, "Keys"=>{"game_uuid"=>{"S"=>"f9967744-f811-4da7-957c-609505b99287"}}, "NewImage"=>{"game"=>{"M"=>{"before_game"=>{"BOOL"=>false}, "game_started_at"=>{"N"=>"1660793962364"}, "required_players"=>{"N"=>"2"}, "game_score"=>{"M"=>{"red"=>{"N"=>"0"}, "blue"=>{"N"=>"5"}}}, "queued_via"=>{"S"=>"queue match"}, "blue_team_discord_ids"=>{"L"=>[{"S"=>"417766998471213061"}]}, "uuid"=>{"S"=>"f9967744-f811-4da7-957c-609505b99287"}, "elo_before_game"=>{"M"=>{"417766998471213061"=>{"M"=>{"elo"=>{"N"=>"915"}, "season_elos"=>{"M"=>{}}}}, "240177490906054658"=>{"M"=>{"elo"=>{"N"=>"1001"}, "season_elos"=>{"M"=>{}}}}}}, "player_map"=>{"M"=>{"viceww"=>{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}, "ep1cpr0gamer"=>{"S"=>"9bf95247-d0ed-4c22-877e-0ac31532ade7"}}}, "final_game_length_formatted"=>{"S"=>"01:38"}, "season"=>{"S"=>"season1"}, "last_scorer_name"=>{"S"=>"§9viceww"}, "state"=>{"S"=>"AFTER_GAME"}, "joined_players"=>{"L"=>[{"S"=>"viceww"}, {"S"=>"ep1cpr0gamer"}]}, "goals_to_win"=>{"N"=>"5"}, "red_team_discord_names"=>{"L"=>[{"S"=>"ken"}]}, "goals_scored"=>{"L"=>[{"M"=>{"player_uuid"=>{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}, "goal_time"=>{"N"=>"1660793982612"}}}, {"M"=>{"player_uuid"=>{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}, "goal_time"=>{"N"=>"1660794002416"}}}, {"M"=>{"player_uuid"=>{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}, "goal_time"=>{"N"=>"1660794026113"}}}, {"M"=>{"player_uuid"=>{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}, "goal_time"=>{"N"=>"1660794042912"}}}, {"M"=>{"player_uuid"=>{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}, "goal_time"=>{"N"=>"1660794059814"}}}]}, "blue_team_minecraft_uuids"=>{"L"=>[{"S"=>"f0885cea-8291-4734-be1b-bf37f6bcab7c"}]}, "during_game"=>{"BOOL"=>false}, "queued_at"=>{"S"=>"2022-08-18T03:39:12Z"}, "map_name"=>{"S"=>"condo"}, "red_team_minecraft_uuids"=>{"L"=>[{"S"=>"9bf95247-d0ed-4c22-877e-0ac31532ade7"}]}, "game_ended_at"=>{"N"=>"1660794059822"}, "kills_registered"=>{"L"=>[]}, "number_of_joined_players"=>{"N"=>"2"}, "remaining_time_in_seconds"=>{"N"=>"802"}, "blue_team_discord_names"=>{"L"=>[{"S"=>"viceversa"}]}, "accepted_by_discord_ids"=>{"L"=>[{"M"=>{"accepted_at"=>{"S"=>"2022-08-18T03:39:12Z"}, "discord_id"=>{"S"=>"417766998471213061"}}}, {"M"=>{"accepted_at"=>{"S"=>"2022-08-18T03:39:12Z"}, "discord_id"=>{"S"=>"240177490906054658"}}}]}, "dequeued_at"=>{"S"=>"2022-08-18T03:39:14.341Z"}, "remaining_time_formatted"=>{"S"=>"13:23"}, "red_team_discord_ids"=>{"L"=>[{"S"=>"240177490906054658"}]}, "game_length_in_seconds"=>{"N"=>"900"}, "task_ip"=>{"S"=>"10.0.0.126"}}}, "updated_at"=>{"S"=>"2022-08-18T09:40:14Z"}, "game_uuid"=>{"S"=>"f9967744-f811-4da7-957c-609505b99287"}, "created_at"=>{"S"=>"2022-08-18T03:39:14Z"}}, "SequenceNumber"=>"1503879600000000009881460222", "SizeBytes"=>1729, "StreamViewType"=>"NEW_IMAGE"}, "eventSourceARN"=>"arn:aws:dynamodb:us-west-2:595508394202:table/syndicate_production_games/stream/2021-10-06T23:13:58.394"}]}
+events = Aws::DynamoDBStreams::AttributeTranslator.from_event(f)
+event = events.first
+game_stream = GameStream.new(event)
+game_stream.compute_elo_changes
+binding.pry;1
+game_stream.update_leaderboard
+puts 'foo'
+exit

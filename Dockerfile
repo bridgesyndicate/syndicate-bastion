@@ -1,4 +1,4 @@
-FROM ruby:2.7.3-slim-buster
+B1;5202;0cFROM ruby:2.7.3-slim-buster
 RUN set -eux; \
         apt-get update; \
         apt-get install -y --no-install-recommends \
@@ -18,7 +18,8 @@ RUN set -eux; \
 		postgresql-client-common \
 		postgresql-12 \
 		postgresql-client-12 \
-		unzip
+		unzip \
+                curl
 ADD idle.sh /root
 RUN cd /root && wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
     unzip awscli-exe-linux-x86_64.zip && \
