@@ -6,6 +6,11 @@ aws ecs run-task --enable-execute-command --task-definition SyndicateBastionTask
 'awsvpcConfiguration={subnets=[subnet-02f0a2e9ba4b5d279],securityGroups=[sg-0cde2458dac7fcd35],assignPublicIp=DISABLED}'
 ```
 
+Find it
+```
+aws ecs list-tasks --cluster SyndicateECSCluster  --family  SyndicateBastionTaskDefinition
+```
+
 Enter a container
 ```
 aws ecs execute-command --cluster SyndicateECSCluster --command "/bin/bash" --interactive --task 13568e5ffcd74f72b494b9d3640621c5
@@ -15,6 +20,12 @@ Check out the database
 ```
 psql postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres
 ```
+
+Kill it
+```
+aws ecs stop-task --cluster SyndicateECSCluster --task 718dcb7ca7fe453c9f451fa229d71f90
+```
+
 
 ### other shit
 
