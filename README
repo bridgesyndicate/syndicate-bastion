@@ -26,6 +26,18 @@ Kill it
 aws ecs stop-task --cluster SyndicateECSCluster --task 718dcb7ca7fe453c9f451fa229d71f90
 ```
 
+Dump the database
+```
+pg_dump postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres > db.$(date +%s).pg_dump
+gzip /tmp/db.1666302692.pg_dump
+base64 /tmp/db.1666302692.pg_dump.gz > db.1666302692.pg_dump.gz.64
+```
+
+Pull down a copy
+```
+aws ecs execute-command --cluster SyndicateECSCluster --command "cat db.1666302692.pg_dump.gz.64" --interactive --task 8816d9ca60ba41e9ab4a9b5241ed9325 | tail +6 | head -n -2 | tr -d '\015' | base64 -d | gzip -d > db.1666302692.pg_dump
+```
+
 
 ### other shit
 
