@@ -28,9 +28,10 @@ aws ecs stop-task --cluster SyndicateECSCluster --task 718dcb7ca7fe453c9f451fa22
 
 Dump the database
 ```
-pg_dump postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres > db.$(date +%s).pg_dump
-gzip /tmp/db.1666302692.pg_dump
-base64 /tmp/db.1666302692.pg_dump.gz > db.1666302692.pg_dump.gz.64
+DATE=$(date +%s)
+pg_dump postgres://AmazonPgUsername:AmazonPgPassword@${POSTGRES_HOST}/postgres > db.${DATE}.pg_dump
+gzip db.${DATE}.pg_dump
+base64 db.${DATE}.pg_dump.gz > db.${DATE}.pg_dump.gz.64
 ```
 
 Pull down a copy
